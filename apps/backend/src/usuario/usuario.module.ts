@@ -4,6 +4,7 @@ import { UsuarioController } from './usuario.controller';
 import { DbModule } from 'src/db/db.module';
 import { UsuarioRepository } from './usuario.repository';
 import { BcryptProvider } from './bcrypt.provider';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Module({
   imports: [DbModule],

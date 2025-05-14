@@ -1,81 +1,122 @@
-# Turborepo starter
+# 💈 Scissor Titans
 
-This is an official starter Turborepo.
+Este repositório contém o desenvolvimento de uma API RESTful voltada para o controle de uma barbearia, estruturada em um monorepo com TurboRepo e utilizando tecnologias modernas como NestJS, PrismaORM e banco de dados hospedado no Supabase (PostgreSQL). A API permite registro de usuários, listagem de serviços, bem como a criação, busca e remoção de agendamentos — com rotas protegidas via autenticação JWT.
 
-## Using this example
+A aplicação roda localmente na porta 3001, e conta com documentação interativa seguindo o padrão OpenAPI, disponível em `/docs`.
 
-Run the following command:
+# 🧭 Objetivo da Aplicação
 
-```sh
-npx create-turbo@latest
+A API tem como propósito centralizar e facilitar a gestão de uma barbearia por meio de endpoints que permitem:
+- 📋 Registro e autenticação de usuários
+- ✂️ Consulta de serviços oferecidos
+- 🗓️ Criação, listagem, busca e cancelamento de agendamentos (rotas protegidas via JWT)
+
+# 🧱 Estrutura do Monorepo
+
+```bash
+scissor-titans/
+│
+├── apps/
+│   └── backend/                  # API construída com NestJS
+│       └── requisicoes.http      # Arquivo de testes para REST Client     
+│
+├── packages/                     # pacotes reutilizáveis ou libs internas 
+│
+├── turbo.json                    # Configuração do TurboRepo
+└── README.md
 ```
 
-## What's inside?
+# 🛠️ Tecnologias Utilizadas
+| Tecnologia                                                                           | Descrição                                                |
+| ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| [NestJS](https://nestjs.com/)                                                        | Framework para construção de APIs escaláveis com Node.js |
+| [Prisma ORM](https://www.prisma.io/)                                                 | ORM moderno e typesafe para bancos relacionais           |
+| [Supabase](https://supabase.com/)                                                    | Plataforma backend com banco PostgreSQL gerenciado       |
+| [JWT](https://jwt.io/)                                                               | Autenticação segura via JSON Web Token                   |
+| [TurboRepo](https://turbo.build/repo)                                                | Gerenciamento eficiente de monorepos                     |
+| [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) | Extensão do VSCode para testes HTTP                      |
+| [OpenAPI (Swagger)](https://swagger.io/specification/)                               | Documentação de APIs REST padronizada                    |
 
-This Turborepo includes the following packages/apps:
 
-### Apps and Packages
+# 🔒 Segurança
+As rotas de *agendamento* são protegidas por JWT, garantindo que apenas usuários autenticados possam:
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- Criar novos agendamentos
+- Consultar seus agendamentos
+- Cancelar um agendamento existente
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+O token deve ser enviado via header:
 
 ```
-cd my-turborepo
-pnpm build
+Authorization: Bearer <seu_token>
 ```
 
-### Develop
+# 🔧 Como Executar Localmente
 
-To develop all apps and packages, run the following command:
+## Pré-requisitos
 
+- Node.js
+- Yarn ou npm
+- Conta no [Supabase](https://supabase.com/) com banco PostgreSQL configurado (ou outro PostgreSQL)
+- Arquivo `.env` com as credenciais do banco e chave JWT
+- VSCode com extensão REST Client (opcional)
+
+## Instalação
+
+```bash
+# Clonar o repositório
+git clone https://github.com/gmpandolfo/scissor-titans.git
+cd scissor-titans
+
+# Instalar as dependências
+yarn
+
+# Aplicar as migrações do Prisma (conectando ao Supabase)
+cd apps/backend
+npx prisma migrate deploy
+
+# Iniciar a API
+yarn run dev
 ```
-cd my-turborepo
-pnpm dev
+Após a inicialização, verifique se a API está funcionando acessando o endpoint de healthcheck:
+
+👉 http://localhost:3001/app/ping
+
+# 🧪 Testes
+A API foi testada com a extensão **REST Client** no VSCode. Todas as requisições (registro, login, serviços, agendamentos) estão disponíveis no arquivo:
 ```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
+requisicoes.http
 ```
-cd my-turborepo
-npx turbo login
-```
+Este arquivo simula chamadas reais à API, com e sem autenticação.
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+# 📖 Documentação
+A documentação segue o padrão OpenAPI 3.0, sendo gerada automaticamente com `@nestjs/swagger`.
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+URL da documentação: http://localhost:3001/docs
 
-```
-npx turbo link
-```
+# 📚 Pesquisa e Análise Tecnológica
+## 🔄 Banco de Dados
+- **Supabase + PostgreSQL**: Banco relacional moderno com hospedagem gerenciada, integração fácil via URL e segurança baseada em políticas (RLS).
+- **Prisma ORM**: Permite acesso eficiente e typesafe ao banco, além de facilitar manutenção com migrations e seeds.
 
-## Useful Links
+## 🔐 Autenticação JWT
+- Token assinado e validado via middleware NestJS.
+- Permite escalabilidade e integração futura com OAuth ou autenticação social.
 
-Learn more about the power of Turborepo:
+## ⚖️ Comparações
+| Alternativa   | Comentário                                                              |
+| ------------- | ----------------------------------------------------------------------- |
+| Sequelize ORM | Prisma oferece melhor performance, DX e tipagem                         |
+| Firebase      | Supabase fornece estrutura semelhante, mas com PostgreSQL e open source |
+| Express       | NestJS é mais estruturado e robusto para projetos em larga escala       |
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+
+## 🔮 Tecnologias em Tendência
+- SSR e conteúdo estático: Pode ser usado com frontend Next.js para páginas otimizadas.
+- Microsserviços: A arquitetura NestJS permite expansão modular com serviços isolados.
+- Blockchain: Futuramente possível integrar para registrar pagamentos ou sistemas de fidelidade com NFT/tokens.
+
+## 🚀 Próximas Etapas
+- Criar painel frontend (ex: Next.js + Tailwind)
+- Deploy na Vercel, Railway ou Render
+- Adicionar testes automatizados com Jest e Supertest
