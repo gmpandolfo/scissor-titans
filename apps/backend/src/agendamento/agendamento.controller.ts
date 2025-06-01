@@ -10,8 +10,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { UsuarioLogado } from 'src/usuario/usuario.decorator';
-import { ApiTags, ApiOperation, ApiResponse, ApiProperty } from '@nestjs/swagger';
-import { AgendamentoModule } from './agendamento.module';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AgendamentoModel } from './agendamento.model';
 
 @ApiTags('Agendamentos')
@@ -27,6 +26,8 @@ export class AgendamentoController {
     @Body() agendamento: Agendamento,
     @UsuarioLogado() usuarioLogado: Usuario,
   ) {
+    console.log('Usuário logado:', usuarioLogado);
+
     if (agendamento.usuario.id !== usuarioLogado.id) {
       throw new HttpException('Usuário não autorizado', 401);
     }

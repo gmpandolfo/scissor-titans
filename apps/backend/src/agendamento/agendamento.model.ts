@@ -1,10 +1,10 @@
+import { Agendamento, Profissional, Servico } from "@barba/core";
 import { ApiProperty } from "@nestjs/swagger";
-import { ServicoModel } from "src/servico/servico.model";
 import { UsuarioModel } from "src/usuario/usuario.model";
 
-export class AgendamentoModel {
-    @ApiProperty()
-    id: number;
+export class AgendamentoModel implements Partial<Agendamento>{
+    // @ApiProperty()
+    // id: number;
   
     @ApiProperty()
     data: Date;
@@ -13,8 +13,8 @@ export class AgendamentoModel {
     usuario: UsuarioModel;
   
     @ApiProperty({ type: UsuarioModel })
-    profissional: UsuarioModel;
+    profissional: Profissional;
   
-    @ApiProperty({ type: [ServicoModel] })
-    servicos: ServicoModel[];
+    @ApiProperty(/*{ type: [ServicoModel] }*/)
+    servicos: Servico[];
 }

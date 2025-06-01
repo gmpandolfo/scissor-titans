@@ -1,10 +1,25 @@
-import { Module } from '@nestjs/common';
+// servico.module.ts (ou app.module.ts, se estiver tudo junto)
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { HttpModule } from '@nestjs/axios';
 import { ServicoController } from './servico.controller';
-import { DbModule } from 'src/db/db.module';
-import { ApiProperty } from '@nestjs/swagger';
+import { ServicoProxyService } from './servico-proxy.service';
+import { UsuarioModule } from 'src/usuario/usuario.module';
+import { UsuarioMiddleware } from 'src/usuario/usuario.middleware';
 
 @Module({
-  imports: [DbModule],
+  imports: [HttpModule, UsuarioModule],
   controllers: [ServicoController],
+  providers: [ServicoProxyService],
 })
-export class ServicoModule {}
+export class ServicoModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(UsuarioMiddleware)
+    .exclude(
+        {
+            path: 'servico',
+            method: RequestMethod.GET,
+        }
+    )
+    .forRoutes(ServicoController);
+  }
+}

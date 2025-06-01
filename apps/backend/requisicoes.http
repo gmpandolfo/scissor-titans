@@ -1,7 +1,14 @@
-GET http://localhost:3001/servico
+### registrar novo usuário - NÃO BARBEIRO
+POST http://localhost:3001/usuario/registrar
+Content-Type: application/json
 
-
-###
+{
+    "nome": "Gabriel Pandolfo",
+    "email": "gmpandolfo@empresa.com",
+    "senha": "#Senha123",
+    "telefone": "54999999999"
+}
+### autenticar usuário - NÃO BARBEIRO
 POST http://localhost:3001/usuario/login
 Content-Type: application/json
 
@@ -10,29 +17,54 @@ Content-Type: application/json
     "senha": "#Senha123"
 }
 
-###
+
+### registrar novo usuário - BARBEIRO
 POST http://localhost:3001/usuario/registrar
 Content-Type: application/json
 
 {
-    "nome": "Kathya Tesourada",
-    "email": "kathya@barbabrutal.app",
+    "nome": "Paulo Tesourada",
+    "email": "paulo@scissortitans.app",
     "senha": "#Senha123",
-    "telefone": "11999999999"
+    "telefone": "54999999999",
+    "barbeiro" : true
 }
-
-###
-POST http://localhost:3001/agendamentos
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwibm9tZSI6Ikxlb25hcmRvIExlaXTDo28iLCJlbWFpbCI6Imxlb25hcmRvbWxlaXRhb0Bmb3JtYWNhby5kZXYiLCJ0ZWxlZm9uZSI6IjIxMzEyMzEyMzEyIiwiYmFyYmVpcm8iOmZhbHNlLCJpYXQiOjE3MjIzMDU0MTMsImV4cCI6MTcyMzYwMTQxM30.Lgf-1msBxcbz0_xy4eiq9sbVjICKWamqT-pPYhTU1vo
+### autenticar usuário - BARBEIRO
+POST http://localhost:3001/usuario/login
 Content-Type: application/json
 
 {
-    "data": "2024-07-30T13:00:00.000Z",
-    "usuario": { "id": 5 },
-    "profissional": { "id": 4 },
+    "email": "paulo@scissortitans.app",
+    "senha": "#Senha123"
+}
+
+
+### criar serviço - BARBEIRO
+POST http://localhost:3001/servico
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywibm9tZSI6IlBhdWxvIFRlc291cmFkYSIsImVtYWlsIjoicGF1bG9Ac2Npc3NvcnRpdGFucy5hcHAiLCJ0ZWxlZm9uZSI6IjU0OTk5OTk5OTk5IiwiYmFyYmVpcm8iOnRydWUsImlhdCI6MTc0ODc1MTg4OSwiZXhwIjoxNzUwMDQ3ODg5fQ.oeSqPmYOQj_2hI4oKz_FJtu870aJ6ucc63o38-3XnH0
+Content-Type: application/json
+
+{
+    "nome":"Barba Clássica",
+    "descricao":"Barba aparada e estilizada",
+    "preco":30,
+    "qtdeSlots":3,
+    "imagemURL":"http://example.com/barba.jpg"
+}
+
+### recuperar todos serviços
+GET http://localhost:3001/servico
+
+###
+POST http://localhost:3001/agendamentos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwibm9tZSI6IkdhYnJpZWwgUGFuZG9sZm8iLCJlbWFpbCI6ImdtcGFuZG9sZm9AZW1wcmVzYS5jb20iLCJ0ZWxlZm9uZSI6IjU0OTk5OTk5OTk5IiwiYmFyYmVpcm8iOmZhbHNlLCJpYXQiOjE3NDg3NTA2NTQsImV4cCI6MTc1MDA0NjY1NH0.Qz8TB1gzkoKiRecCiwZ_B6mBVSw1G1YRLDBp9bRhsWQ
+Content-Type: application/json
+
+{
+    "data": "2025-05-12T13:00:00.000Z",
+    "usuario": { "id": 4 },
+    "profissional": { "id": 3 },
     "servicos": [
-        { "id": 1 }, 
-        { "id": 2 },
-        { "id": 3 }
+        { "id": 1 }
     ]
 }

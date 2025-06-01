@@ -16,10 +16,10 @@ async function seed() {
   const usuarios: Partial<Usuario>[] = [
     {
       nome: 'Marcão Machadada',
-      email: 'marcao@barbabrutal.app',
+      email: 'marcao@scissortitans.app',
       // senha é... #Senha123
       senha: '$2b$10$9LQTRK3LRzIddKYW2C4MTelydFzk5Ys4JoROPajNqvYshhrn1PRa6',
-      telefone: '11999999999',
+      telefone: '54999999999',
       barbeiro: true,
     },
   ];
